@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistem Manajemen Produk Toko</title>
+</head>
+<body>
+  <h2>📦 Sistem Manajemen Produk Toko</h2>
+
+  <!-- Form Tambah Produk -->
+  <h3>Tambah Produk Baru</h3>
+  <form id="formProduk">
+    Nama: <input type="text" id="nama" required>
+    Harga: <input type="number" id="harga" required>
+    Stok: <input type="number" id="stok" required>
+    <button type="submit">Tambah Produk</button>
+  </form>
+
+  <!-- Daftar Produk -->
+  <div id="output"></div>
+
+  <script>
+    // Array produk awal
+    let produkToko = [
+      {id: 1, nama: "Laptop", harga: 7000000, stok: 5},
+      {id: 2, nama: "Mouse", harga: 200000, stok: 10},
+      {id: 3, nama: "Keyboard", harga: 350000, stok: 7}
+    ];
+
+    // Fungsi 1: Tambah produk baru
+    function tambahProduk(nama, harga, stok) {
+      let idBaru = produkToko.length > 0 ? produkToko[produkToko.length - 1].id + 1 : 1;
+      let produkBaru = {id: idBaru, nama: nama, harga: harga, stok: stok};
+      produkToko.push(produkBaru);
+      tampilkanProduk();
+    }
+
+    // Fungsi 2: Hapus produk berdasarkan ID
+    function hapusProduk(id) {
+      produkToko = produkToko.filter(p => p.id !== id);
+      tampilkanProduk();
+    }
+
+    // Fungsi 3: Tampilkan produk
+    function tampilkanProduk() {
+      let output = "<h3>Daftar Produk:</h3><ul>";
+      produkToko.forEach(p => {
+        output += `<li>
+          ID: ${p.id} | ${p.nama} - Rp${p.harga} | Stok: ${p.stok} 
+          <button onclick="hapusProduk(${p.id})">Hapus</button>
+        </li>`;
+      });
+      output += "</ul>";
+      document.getElementById("output").innerHTML = output;
+    }
+
+    // Event form untuk tambah produk
+    document.getElementById("formProduk").addEventListener("submit", function(e) {
+      e.preventDefault(); // supaya tidak reload halaman
+      let nama = document.getElementById("nama").value;
+      let harga = parseInt(document.getElementById("harga").value);
+      let stok = parseInt(document.getElementById("stok").value);
+      tambahProduk(nama, harga, stok);
+
+      // reset form
+      document.getElementById("formProduk").reset();
+    });
+
+    // Tampilkan produk awal
+    tampilkanProduk();
+  </script>
+</body>
+</html>
